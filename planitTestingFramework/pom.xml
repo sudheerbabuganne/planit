@@ -65,7 +65,7 @@
         <version>3.0.0-M1</version>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>testng1.xml</suiteXmlFile>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
  
