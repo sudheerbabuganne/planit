@@ -146,7 +146,7 @@ public class TestCase1 {
 		catch(Exception e)
 		{
 			test.log(Status.FAIL,""+e.getMessage());
-			//teardown();
+			teardown();
 		}
 			
 	}	
@@ -156,7 +156,7 @@ public class TestCase1 {
 	
 	public void teardown()
 	{
-		//driver.close();
+		driver.close();
 		
 		report.flush();
 	}

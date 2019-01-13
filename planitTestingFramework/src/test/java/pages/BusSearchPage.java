@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import freemarker.ext.servlet.ServletContextHashModel;
 
 public class BusSearchPage {
 	WebDriver driver;
@@ -34,7 +33,7 @@ public class BusSearchPage {
 	By showlayout_button_1=By.xpath("//div[3]/div[2]/div/div[2]/div/div/div[5]/div[2]/table/tbody/tr[2]/td[4]/input");
 	By bookReturn_button=By.id("btnEnable1");
 	By empty_seat=By.xpath("//div[contains(@class,'seats')]/ul/li[contains(@class,'seat available')]/a");
-	By empty_seat_1=By.xpath("//li[contains(@class,'seat available')]/a");
+	By empty_seat_1=By.xpath("//div[contains(@class,'seats')]/ul/li[contains(@class,'seat available')]/a");
 	By total_fare=By.id("totalfare");
 	By continueToPayment_button=By.xpath("//input[@id='btnEnable1'][@value='Continue to Payment ']");
 	
@@ -66,7 +65,7 @@ public class BusSearchPage {
 		return driver.findElement(total_fare).getText();
 	}
 	
-	public void book_return_ticket(HashMap<String,String> ticketDetails)
+	public void book_return_ticket(HashMap<String,String> ticketDetails) throws InterruptedException
 	{
 		try
 		{
@@ -92,6 +91,7 @@ public class BusSearchPage {
 		if(ticketDetails.containsKey("dropingPoint"))
 			select_drop();
 		showLayout_click(showlayout_button_1);
+		Thread.sleep(2000);
 		selectseat(empty_seat_1);
 		
 	}
@@ -191,6 +191,11 @@ public class BusSearchPage {
 	public void selectseat(By Element)
 	{
 		mywait.until(ExpectedConditions.elementToBeClickable(Element));
+		
+		List<WebElement> seats=driver.findElements(Element);
+		
+		System.out.println("Available seats"+seats.size());
+		
 		driver.findElement(Element).click();
 	}
 	
