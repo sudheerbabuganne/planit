@@ -145,7 +145,7 @@ public class TestCase1 {
 		}
 		catch(Exception e)
 		{
-			test.log(Status.FAIL,""+e.getMessage());
+			test.log(Status.FAIL,""+e.getMessage()+test.addScreenCaptureFromPath(captureScreen()));
 			teardown();
 		}
 			
