@@ -27,21 +27,24 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 
-
+import pages.BusSearchPage;
 import pages.HomePage;
+import pages.PassengerInfoPage;
 import utilities.*;
 
 public class TestCase1 {
 	
 	/*******************Variable declaration****************************/ 
 	
-	public String source,destination,journeydate,returndate,expectedToolTipText;
+	public String source,destination,journeydate,returndate,expectedToolTipText,busOperator;
+	public double onwardJourneyfare,returnJourneyfare,totalAmount;
 	String path=System.getProperty("user.dir")+"//TestData//";
 	ExcelUtil utilities;
 	WebDriver driver=null;
 	WebDriverWait myWait;
 	HomePage homePage;
-	
+	BusSearchPage searchPage;
+	PassengerInfoPage infoPage;
 	ExtentHtmlReporter htmlreporter;
 	ExtentReports report;
 	ExtentTest test;
@@ -60,7 +63,8 @@ public class TestCase1 {
 		launch(browserName); //Launch user specified browser
 		//Object creation
 		homePage=new HomePage(driver);
-		
+		searchPage=new BusSearchPage(driver);
+		infoPage=new PassengerInfoPage(driver);
 		test.log(Status.PASS, "browser launched sucessfully");
 		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
 		myWait=new WebDriverWait(driver, 30);
@@ -77,6 +81,7 @@ public class TestCase1 {
 		journeydate=utilities.getCellData(1, 2);
 		returndate=utilities.getCellData(1, 3);
 		expectedToolTipText=utilities.getCellData(1, 4);
+		busOperator=utilities.getCellData(1, 5);
 	}
 	
 	@Test
@@ -85,28 +90,58 @@ public class TestCase1 {
 	{
 		try
 		{
-		driver.get("https://www.abhibus.com/");
-		myWait.until(ExpectedConditions.titleContains("Online Bus Ticket Booking "));
-		String tooltiptext=homePage.getCompanyLogo_TooltipText();
-		if(compare(expectedToolTipText, tooltiptext))
-			test.log(Status.PASS, "Tooltip text is displayed");
-		else
-			test.log(Status.FAIL,"Tooltip text is not displayed");
-		HashMap<String ,String> searchCriteria=new HashMap<String, String>();
-		searchCriteria.put("source", source);
-		searchCriteria.put("destination", destination);
-		searchCriteria.put("journeydate", journeydate);
-		searchCriteria.put("returndate", returndate);
-		homePage.busSearch(searchCriteria);// search for the buses with the specified criteria
-		test.log(Status.INFO,"entered all details"+ test.addScreenCaptureFromPath(captureScreen()));
-		
-		//Book onward journey
-		
-		
-		//verify Source ,Destination and total fair details
-		
-		
-		
+			driver.get("https://www.abhibus.com/");
+			myWait.until(ExpectedConditions.titleContains("Online Bus Ticket Booking "));
+			String tooltiptext=homePage.getCompanyLogo_TooltipText();
+			if(compare(expectedToolTipText, tooltiptext))
+				test.log(Status.PASS, "Tooltip text is displayed");
+			else
+				test.log(Status.FAIL,"Tooltip text is not displayed");
+			HashMap<String ,String> searchCriteria=new HashMap<String, String>();
+			searchCriteria.put("source", source);
+			searchCriteria.put("destination", destination);
+			searchCriteria.put("journeydate", journeydate);
+			searchCriteria.put("returndate", returndate);
+			homePage.busSearch(searchCriteria);// search for the buses with the specified criteria
+			test.log(Status.INFO,"entered all details"+ test.addScreenCaptureFromPath(captureScreen()));
+			
+			//Book onward journey
+			
+			HashMap<String,String>journeyDetails=new HashMap<String, String>();
+			journeyDetails.put("busOperator", busOperator);
+			journeyDetails.put("boardingPoint", "2");
+			searchPage.book_ticket(journeyDetails);
+			onwardJourneyfare=Double.parseDouble(searchPage.getTotalfare());
+			System.out.println(onwardJourneyfare);
+			
+			//Book return journey
+			//Click on return
+			searchPage.bookreturn();
+			HashMap<String,String>returnDetails=new HashMap<String, String>();
+			returnDetails.put("busOperator", "APSRTC");
+			returnDetails.put("dropingPoint", "2");
+			searchPage.book_ticket(returnDetails);
+			returnJourneyfare=Double.parseDouble(searchPage.getTotalfare());
+			System.out.println(returnJourneyfare);
+			
+			//click on continue payment
+			
+			searchPage.continuetopayment_click();
+			
+			//verify total fare on passenger info page
+			
+			  totalAmount=infoPage.getTotalAmount();
+			  
+			  if(totalAmount==(onwardJourneyfare+returnJourneyfare))
+			  {
+				  test.log(Status.PASS, "Total fare is as expected"+test.addScreenCaptureFromPath(captureScreen()));
+			  }
+			  
+			  else 
+			  {
+				  test.log(Status.PASS, "Total fare is as expected"+test.addScreenCaptureFromPath(captureScreen()));
+			  }
+				
 		}
 		catch(Exception e)
 		{
@@ -114,7 +149,7 @@ public class TestCase1 {
 			teardown();
 		}
 			
-		}	
+	}	
 		
 	
 	@AfterClass
