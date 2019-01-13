@@ -120,7 +120,7 @@ public class TestCase1 {
 			HashMap<String,String>returnDetails=new HashMap<String, String>();
 			returnDetails.put("busOperator", "APSRTC");
 			returnDetails.put("dropingPoint", "2");
-			searchPage.book_ticket(returnDetails);
+			searchPage.book_return_ticket(returnDetails);
 			returnJourneyfare=Double.parseDouble(searchPage.getTotalfare());
 			System.out.println(returnJourneyfare);
 			
@@ -146,7 +146,7 @@ public class TestCase1 {
 		catch(Exception e)
 		{
 			test.log(Status.FAIL,""+e.getMessage());
-			teardown();
+			//teardown();
 		}
 			
 	}	
@@ -156,7 +156,7 @@ public class TestCase1 {
 	
 	public void teardown()
 	{
-		driver.close();
+		//driver.close();
 		
 		report.flush();
 	}

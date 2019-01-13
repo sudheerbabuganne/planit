@@ -12,10 +12,15 @@ public class BusSearchPage {
 	WebDriver driver;
 	
 	/*****************objects in bus search page*****************/
-	By operator=By.xpath("//span[contains(text(),'Operator')]/child::span");
+	
+	By operator_onwards=By.xpath("//div[@id='filtersOnward']/div[2]/div[3]/div/span/span");
 	By operators_List=(By.xpath("//*[@id=\"filtersOnward\"]/div[2]/div[3]/div[3]/form/ul/li"));
+	By operators_return_List=(By.xpath("//*[@id=\"filtersReturn\"]/div[2]/div[3]/div[3]/form/ul/li"));
+	
+	By operators_returns=By.xpath("//div[@id='filtersReturn']/div[2]/div[3]/div/span/span");
 	By selectSeat_link=By.xpath("//span[contains(text(),'Select Seat')]");
-	By selectAPSRTC_service=By.xpath("//*[@id=\"ShowBtnHideAPSRTC1\"]");
+	By selectAPSRTC_service=By.xpath("//span[@id='ShowBtnHideAPSRTC1']");
+	By selectAPSRTC_service_2=By.xpath("//span[@id='ShowBtnHideAPSRTC1'])[2]");
 	By boardingpoint_dropdown=By.id("pickup_id1");
 	By dropingpoint_dropdown=By.id("drop_id2");
 	By showlayout_button=By.id("btnEnable11");
@@ -31,9 +36,14 @@ public class BusSearchPage {
 		this.driver=driver;
 	}
 	
-	public void click_operator()
+	public void click_operator_onwards()
 	{
-		driver.findElement(operator).click();
+		driver.findElement(operator_onwards).click();
+	}
+	
+	public void click_operator_return()
+	{
+		driver.findElement(operators_returns).click();
 	}
 	
 	public void continuetopayment_click()
@@ -45,6 +55,40 @@ public class BusSearchPage {
 	{
 		return driver.findElement(total_fare).getText();
 	}
+	
+	public void book_return_ticket(HashMap<String,String> ticketDetails)
+	{
+		try
+		{
+		click_operator_return();
+		if(ticketDetails.containsKey("busOperator"))
+		{
+			select_operator(operators_return_List,ticketDetails.get("busOperator"));
+			if(ticketDetails.get("busOperator").equals("APSRTC"))
+			{
+				System.out.println("Entered till hear");
+				selectAPSRTC(selectAPSRTC_service);
+			}
+		}
+		}
+		
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		selectseatlink_click();
+		if(ticketDetails.containsKey("dropingPoint"))
+			select_drop();
+		showLayout_click();
+		selectseat();
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Method Name:book_ticket
 	 * Description : will book the ticket with the user specified details 
@@ -54,21 +98,20 @@ public class BusSearchPage {
 	
 	public void book_ticket(HashMap<String,String> ticketDetails)
 	{
-		click_operator();
+		click_operator_onwards();
 		if(ticketDetails.containsKey("busOperator"))
 		{
-			select_operator(ticketDetails.get("busOperator"));
+			select_operator(operators_List,ticketDetails.get("busOperator"));
+			//If operator is APSRTC you need to click on this extra
 			if(ticketDetails.get("busOperator").equals("APSRTC"))
 			{
-				selectAPSRTC();
+				selectAPSRTC(selectAPSRTC_service);
 			}
 		}
 		
 		selectseatlink_click();
 		if(ticketDetails.containsKey("boardingPoint"))
 			select_boarding();
-		if(ticketDetails.containsKey("dropingPoint"))
-			select_drop();
 		showLayout_click();
 		selectseat();
 		
@@ -85,10 +128,10 @@ public class BusSearchPage {
 	 * Description: select user specified operator
 	 * 
 	 * */
-	public void select_operator(String operatorName)
+	public void select_operator(By element,String operatorName)
 	{
 		Boolean result=false;
-		List<WebElement> operators=driver.findElements(operators_List);
+		List<WebElement> operators=driver.findElements(element);
 		for(WebElement ope:operators)
 		{
 			
@@ -106,10 +149,10 @@ public class BusSearchPage {
 		}
 	}
 	
-	public void selectAPSRTC()
+	public void selectAPSRTC(By Element)
 	{
-		if(driver.findElement(selectAPSRTC_service).isDisplayed())
-		driver.findElement(selectAPSRTC_service).click();
+		if(driver.findElement(Element).isDisplayed())
+		driver.findElement(Element).click();
 	}
 	
 	public void selectseatlink_click()

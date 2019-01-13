@@ -46,7 +46,7 @@
 		<ul id='nav-mobile' class='right hide-on-med-and-down nav-right'>
 			<li>
                 <a href='#!'>
-                    <span class='label suite-start-time blue darken-3'>Jan 13, 2019 10:47:40 AM</span>
+                    <span class='label suite-start-time blue darken-3'>Jan 13, 2019 09:18:48 PM</span>
 				</a>
 			</li>
 			<li>
@@ -72,6 +72,7 @@
 				</a>
 				<ul id='tests-toggle' class='dropdown-content'>
 											<li status='pass'><a href='#!'>Pass <i class='material-icons green-text'>check_circle</i></a></li>
+						<li status='fail'><a href='#!'>Fail <i class='material-icons red-text'>cancel</i></a></li>
 					<li class='divider'></li>
 					<li status='clear' clear='true'><a href='#!'>Clear Filters <i class='material-icons'>clear</i></a></li>
 				</ul>
@@ -122,10 +123,10 @@
 					<canvas id='parent-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='100%'><span class='strong'>1</span> test(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='0%'><span class='strong'>0</span> test(s) passed</span>
 				</div>
 				<div class='block text-small'>
-					<span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> test(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
+					<span class='strong tooltipped' data-position='top' data-tooltip='100%'>1</span> test(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> others
 				</div>
 			</div>
 		</div>
@@ -137,10 +138,10 @@
 					<canvas id='child-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='66.667%'><span class='strong'>2</span> step(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='50%'><span class='strong'>2</span> step(s) passed</span>
 				</div>
 				<div class='block text-small'>
-					<span class='strong tooltipped' data-position='top' data-tooltip='0%'>0</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='33.333%'>1</span> others
+					<span class='strong tooltipped' data-position='top' data-tooltip='25%'>1</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='25%'>1</span> others
 				</div>
 			</div>
 		</div>
@@ -155,17 +156,17 @@
 			<ul id='test-collection' class='test-collection'>
 				
 				
-				<li class='test displayed active  pass' status='pass' bdd='false' test-id='1'>
+				<li class='test displayed active  fail' status='fail' bdd='false' test-id='1'>
 					<div class='test-heading'>
 						<span class='test-name'>Orange HRM</span>
-						<span class='test-time'>Jan 13, 2019 10:47:40 AM</span>
-						<span class='test-status right pass'>pass</span>
+						<span class='test-time'>Jan 13, 2019 09:18:48 PM</span>
+						<span class='test-status right fail'>fail</span>
 					</div>
 					<div class='test-content hide'>
 <div class='test-time-info'>
-	<span class='label start-time'>Jan 13, 2019 10:47:40 AM</span>
-	<span class='label end-time'>Jan 13, 2019 10:48:22 AM</span>
-	<span class='label time-taken grey lighten-1 white-text'>0h 0m 42s+27ms</span>
+	<span class='label start-time'>Jan 13, 2019 09:18:48 PM</span>
+	<span class='label end-time'>Jan 13, 2019 09:19:28 PM</span>
+	<span class='label time-taken grey lighten-1 white-text'>0h 0m 40s+96ms</span>
 </div>
 	<div class='test-desc'>Orange HRM Login flow </div>
 	<div class='test-steps'>
@@ -180,24 +181,34 @@
 			<tbody>
 				<tr class='log' status='pass'>
 					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
-					<td class='timestamp'>10:47:53 AM</td>
+					<td class='timestamp'>9:18:59 PM</td>
 					<td class='step-details'>browser launched sucessfully</td>
 				</tr>
 				<tr class='log' status='pass'>
 					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
-					<td class='timestamp'>10:48:11 AM</td>
+					<td class='timestamp'>9:19:13 PM</td>
 					<td class='step-details'>Tooltip text is displayed</td>
 				</tr>
 				<tr class='log' status='info'>
 					<td class='status info' title='info' alt='info'><i class='material-icons'>info_outline</i></td>
-					<td class='timestamp'>10:48:22 AM</td>
-					<td class='step-details'>entered all detailscom.aventstack.extentreports.ExtentTest@1c32386d</td>
+					<td class='timestamp'>9:19:23 PM</td>
+					<td class='step-details'>entered all detailscom.aventstack.extentreports.ExtentTest@71cf1b07</td>
+				</tr>
+				<tr class='log' status='fail'>
+					<td class='status fail' title='fail' alt='fail'><i class='material-icons'>cancel</i></td>
+					<td class='timestamp'>9:19:28 PM</td>
+					<td class='step-details'>Element <span class="book"> could not be scrolled into view
+Build info: version: '3.11.0', revision: 'e59cfb3', time: '2018-03-11T20:26:55.152Z'
+System info: host: 'HOME_LAPTOP', ip: '192.168.1.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_121'
+Driver info: org.openqa.selenium.firefox.FirefoxDriver
+Capabilities {acceptInsecureCerts: true, browserName: firefox, browserVersion: 64.0.2, capabilities: {desiredCapabilities: {acceptInsecureCerts: true, browserName: firefox}}, javascriptEnabled: true, moz:accessibilityChecks: false, moz:headless: false, moz:processID: 9680, moz:profile: C:\Users\sujatha\AppData\Lo..., moz:shutdownTimeout: 60000, moz:useNonSpecCompliantPointerOrigin: false, moz:webdriverClick: true, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, platformVersion: 10.0, rotatable: false, setWindowRect: true, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify}
+Session ID: 61f3fa17-8c2c-44a3-97a2-e51196294bfe</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 							<ul class='screenshots'>
-								<li><img data-featherlight='C:\Users\sujatha\git\planit\planitTestingFramework//images//01132019104822766.png' width='10%' src='C:\Users\sujatha\git\planit\planitTestingFramework//images//01132019104822766.png' data-src='C:\Users\sujatha\git\planit\planitTestingFramework//images//01132019104822766.png'></li>
+								<li><img data-featherlight='C:\Users\sujatha\git\planit\planitTestingFramework//images//01132019211923070.png' width='10%' src='C:\Users\sujatha\git\planit\planitTestingFramework//images//01132019211923070.png' data-src='C:\Users\sujatha\git\planit\planitTestingFramework//images//01132019211923070.png'></li>
 							</ul>
 					</div>
 				</li>
@@ -242,25 +253,25 @@
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Steps
-					<div class='panel-lead'>3</div>
+					<div class='panel-lead'>4</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Start
-					<div class='panel-lead'>Jan 13, 2019 10:47:40 AM</div>
+					<div class='panel-lead'>Jan 13, 2019 09:18:48 PM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 			 		End
-			 		<div class='panel-lead'>Jan 13, 2019 10:48:26 AM</div>
+			 		<div class='panel-lead'>Jan 13, 2019 09:19:28 PM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Time Taken
-					<div class='panel-lead'>0h 0m 45s+768ms</div>
+					<div class='panel-lead'>0h 0m 40s+228ms</div>
 				</div>
 			</div>
 		</div>
@@ -273,22 +284,22 @@
 
 		<script>
 			var statusGroup = {
-				passParent: 1,
-				failParent: 0,
+				passParent: 0,
+				failParent: 1,
 				fatalParent: 0,
 				errorParent: 0,
 				warningParent: 0,
 				skipParent: 0,
-				exceptionsParent: 0,
+				exceptionsParent: 1,
 				
 				passChild: 2,
-				failChild: 0,
+				failChild: 1,
 				fatalChild: 0,
 				errorChild: 0,
 				warningChild: 0,
 				skipChild: 0,
 				infoChild: 1,
-				exceptionsChild: 0,
+				exceptionsChild: 1,
 				
 				passGrandChild: 0,
 				failGrandChild: 0,
