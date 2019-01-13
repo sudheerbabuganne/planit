@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Suite" duration-ms="59845" started-at="2019-01-13T05:13:37Z" finished-at="2019-01-13T05:14:37Z">
+    <groups>
+    </groups>
+    <test name="Test" duration-ms="59845" started-at="2019-01-13T05:13:37Z" finished-at="2019-01-13T05:14:37Z">
+      <class name="testcases.TestCase1">
+        <test-method status="PASS" signature="getTestdata()[pri:0, instance:testcases.TestCase1@5442a311]" name="getTestdata" is-config="true" duration-ms="1266" started-at="2019-01-13T05:13:37Z" finished-at="2019-01-13T05:13:38Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getTestdata -->
+        <test-method status="PASS" signature="initialize(java.lang.String)[pri:0, instance:testcases.TestCase1@5442a311]" name="initialize" is-config="true" duration-ms="32893" started-at="2019-01-13T05:13:38Z" finished-at="2019-01-13T05:14:11Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[firefox]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- initialize -->
+        <test-method status="PASS" signature="ticket_Booking()[pri:0, instance:testcases.TestCase1@5442a311]" name="ticket_Booking" duration-ms="21756" started-at="2019-01-13T05:14:11Z" finished-at="2019-01-13T05:14:33Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ticket_Booking -->
+        <test-method status="PASS" signature="teardown()[pri:0, instance:testcases.TestCase1@5442a311]" name="teardown" is-config="true" duration-ms="3863" started-at="2019-01-13T05:14:33Z" finished-at="2019-01-13T05:14:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+      </class> <!-- testcases.TestCase1 -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+</testng-results>
