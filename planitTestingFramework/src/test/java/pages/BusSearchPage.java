@@ -6,10 +6,15 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import freemarker.ext.servlet.ServletContextHashModel;
 
 public class BusSearchPage {
 	WebDriver driver;
+	WebDriverWait mywait;
 	
 	/*****************objects in bus search page*****************/
 	
@@ -19,13 +24,17 @@ public class BusSearchPage {
 	
 	By operators_returns=By.xpath("//div[@id='filtersReturn']/div[2]/div[3]/div/span/span");
 	By selectSeat_link=By.xpath("//span[contains(text(),'Select Seat')]");
-	By selectAPSRTC_service=By.xpath("//span[@id='ShowBtnHideAPSRTC1']");
-	By selectAPSRTC_service_2=By.xpath("//span[@id='ShowBtnHideAPSRTC1'])[2]");
+	By selectSear_link_2=By.xpath("//div[3]/div[2]/div/div[2]/div/div/div[3]/div[2]/a/span");
+	//By selectAPSRTC_service=By.xpath("//span[@id='ShowBtnHideAPSRTC1']");
+	By selectAPSRTC_service=By.id("ShowBtnHideAPSRTC1");
+	By selectAPSRTC_service_2=By.xpath("//div[@id='rtcHdAPSRTC2']/div[3]/div/span");
 	By boardingpoint_dropdown=By.id("pickup_id1");
 	By dropingpoint_dropdown=By.id("drop_id2");
 	By showlayout_button=By.id("btnEnable11");
+	By showlayout_button_1=By.xpath("//div[3]/div[2]/div/div[2]/div/div/div[5]/div[2]/table/tbody/tr[2]/td[4]/input");
 	By bookReturn_button=By.id("btnEnable1");
 	By empty_seat=By.xpath("//div[contains(@class,'seats')]/ul/li[contains(@class,'seat available')]/a");
+	By empty_seat_1=By.xpath("//li[contains(@class,'seat available')]/a");
 	By total_fare=By.id("totalfare");
 	By continueToPayment_button=By.xpath("//input[@id='btnEnable1'][@value='Continue to Payment ']");
 	
@@ -34,6 +43,7 @@ public class BusSearchPage {
 	public BusSearchPage(WebDriver driver)
 	{
 		this.driver=driver;
+		mywait=new WebDriverWait(driver, 50);
 	}
 	
 	public void click_operator_onwards()
@@ -67,7 +77,7 @@ public class BusSearchPage {
 			if(ticketDetails.get("busOperator").equals("APSRTC"))
 			{
 				System.out.println("Entered till hear");
-				selectAPSRTC(selectAPSRTC_service);
+				selectAPSRTC(selectAPSRTC_service_2);
 			}
 		}
 		}
@@ -78,11 +88,11 @@ public class BusSearchPage {
 		}
 		
 		
-		selectseatlink_click();
+		selectseatlink_click(selectSear_link_2);
 		if(ticketDetails.containsKey("dropingPoint"))
 			select_drop();
-		showLayout_click();
-		selectseat();
+		showLayout_click(showlayout_button_1);
+		selectseat(empty_seat_1);
 		
 	}
 	
@@ -109,11 +119,11 @@ public class BusSearchPage {
 			}
 		}
 		
-		selectseatlink_click();
+		selectseatlink_click(selectSeat_link);
 		if(ticketDetails.containsKey("boardingPoint"))
 			select_boarding();
-		showLayout_click();
-		selectseat();
+		showLayout_click(showlayout_button);
+		selectseat(empty_seat);
 		
 	}
 	
@@ -151,13 +161,15 @@ public class BusSearchPage {
 	
 	public void selectAPSRTC(By Element)
 	{
-		if(driver.findElement(Element).isDisplayed())
+		//if(driver.findElement(Element).isDisplayed())
+		mywait.until(ExpectedConditions.elementToBeClickable(Element));
 		driver.findElement(Element).click();
 	}
 	
-	public void selectseatlink_click()
+	public void selectseatlink_click(By Element)
 	{
-		driver.findElement(selectSeat_link).click();
+		mywait.until(ExpectedConditions.elementToBeClickable(Element));
+		driver.findElement(Element).click();
 	}
 	
 	public void select_boarding()
@@ -166,18 +178,20 @@ public class BusSearchPage {
 		boarding.selectByIndex(2);
 	}
 	
-	public void showLayout_click()
+	public void showLayout_click(By Element)
 	{
-		driver.findElement(showlayout_button).click();
+		mywait.until(ExpectedConditions.elementToBeClickable(Element));
+		driver.findElement(Element).click();
 	}
 	
 	/**
 	 * Name: selectseat
 	 * Description : select first empty seat 
 	 */
-	public void selectseat()
+	public void selectseat(By Element)
 	{
-		driver.findElement(empty_seat).click();
+		mywait.until(ExpectedConditions.elementToBeClickable(Element));
+		driver.findElement(Element).click();
 	}
 	
 	public void bookreturn()
