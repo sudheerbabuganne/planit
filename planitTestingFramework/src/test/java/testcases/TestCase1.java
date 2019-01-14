@@ -168,6 +168,8 @@ public class TestCase1 {
 		
 		  totalAmount=infoPage.getTotalAmount();
 		  
+		  test.log(Status.INFO, " total fare"+totalAmount);
+		  
 		  System.out.println(totalAmount);
 		  
 		  if(totalAmount>(onwardJourneyfare+returnJourneyfare))
