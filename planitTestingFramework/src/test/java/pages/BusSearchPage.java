@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,8 +24,9 @@ public class BusSearchPage {
 	
 	By operators_returns=By.xpath("//div[@id='filtersReturn']/div[2]/div[3]/div/span/span");
 	By selectSeat_link=By.xpath("//span[contains(text(),'Select Seat')]");
-	By selectSear_link_2=By.xpath("//div[3]/div[2]/div/div[2]/div/div/div[3]/div[2]/a/span");
+	By selectSeat_link_2=By.xpath("//div[3]/div[2]/div/div[2]/div/div/div[3]/div[2]/a/span");
 	//By selectAPSRTC_service=By.xpath("//span[@id='ShowBtnHideAPSRTC1']");
+	//By selectSeat_link_2=By.id("O4-7ZZ");
 	By selectAPSRTC_service=By.id("ShowBtnHideAPSRTC1");
 	By selectAPSRTC_service_2=By.xpath("//div[@id='rtcHdAPSRTC2']/div[3]/div/span");
 	By boardingpoint_dropdown=By.id("pickup_id1");
@@ -33,9 +35,12 @@ public class BusSearchPage {
 	By showlayout_button_1=By.xpath("//div[3]/div[2]/div/div[2]/div/div/div[5]/div[2]/table/tbody/tr[2]/td[4]/input");
 	By bookReturn_button=By.id("btnEnable1");
 	By empty_seat=By.xpath("//div[contains(@class,'seats')]/ul/li[contains(@class,'seat available')]/a");
-	By empty_seat_1=By.xpath("//div[contains(@class,'seats')]/ul/li[contains(@class,'seat available')]/a");
+	//By empty_seat_1=By.xpath("//div[contains(@class,'seats')]/ul/li");
+	//By empty_seat_1=By.xpath("//a[starts-with(@href,'javascript:seat_select')]");
+	//By empty_seat_1=By.xpath("//div[5]/div[3]/div/div/div/div/div/ul/li[contains(@class,'seat available')]/a");
 	By total_fare=By.id("totalfare");
-	By continueToPayment_button=By.xpath("//input[@id='btnEnable1'][@value='Continue to Payment ']");
+	//By continueToPayment_button=By.xpath("//input[@id='btnEnable1'][@value='Continue to Payment ']");
+	By continueToPayment_button=By.id("btnEnable1");
 	
 	/************************************************/
 	//Constructor
@@ -57,6 +62,7 @@ public class BusSearchPage {
 	
 	public void continuetopayment_click()
 	{
+		mywait.until(ExpectedConditions.elementToBeClickable(continueToPayment_button));
 		driver.findElement(continueToPayment_button).click();
 	}
 	
@@ -75,7 +81,7 @@ public class BusSearchPage {
 			select_operator(operators_return_List,ticketDetails.get("busOperator"));
 			if(ticketDetails.get("busOperator").equals("APSRTC"))
 			{
-				System.out.println("Entered till hear");
+				
 				selectAPSRTC(selectAPSRTC_service_2);
 			}
 		}
@@ -87,12 +93,16 @@ public class BusSearchPage {
 		}
 		
 		
-		selectseatlink_click(selectSear_link_2);
+		selectseatlink_click(selectSeat_link_2);
 		if(ticketDetails.containsKey("dropingPoint"))
 			select_drop();
 		showLayout_click(showlayout_button_1);
 		Thread.sleep(2000);
-		selectseat(empty_seat_1);
+		JavascriptExecutor js=((JavascriptExecutor)driver);
+		js.executeScript("window.scrollBy(0,250)", "");
+		
+		
+		selectseat(empty_seat);
 		
 	}
 	
@@ -123,6 +133,8 @@ public class BusSearchPage {
 		if(ticketDetails.containsKey("boardingPoint"))
 			select_boarding();
 		showLayout_click(showlayout_button);
+		JavascriptExecutor js=((JavascriptExecutor)driver);
+		js.executeScript("window.scrollBy(0,250)", "");
 		selectseat(empty_seat);
 		
 	}
@@ -190,20 +202,20 @@ public class BusSearchPage {
 	 */
 	public void selectseat(By Element)
 	{
-		mywait.until(ExpectedConditions.elementToBeClickable(Element));
+		//mywait.until(ExpectedConditions.elementToBeClickable(Element));
 		
 		List<WebElement> seats=driver.findElements(Element);
 		
 		System.out.println("Available seats"+seats.size());
 		
-		driver.findElement(Element).click();
+		//driver.findElement(Element).click();
+		seats.get(seats.size()-1).click();
 	}
 	
 	public void bookreturn()
 	{
 		driver.findElement(bookReturn_button).click();
 	}
-	
 	
 	public void select_drop()
 	{
