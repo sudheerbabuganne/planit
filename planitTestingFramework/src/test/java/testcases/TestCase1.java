@@ -16,6 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
@@ -84,16 +85,19 @@ public class TestCase1 {
 		busOperator=utilities.getCellData(1, 5);
 	}
 	
-	@Test
 	
-	public void ticket_Booking() throws IOException, InterruptedException
+	// Search for buses with user specified criteria
+	@Test (priority=1)
+	
+	public void bus_search()
+	
 	{
 		try
 		{
 			driver.get("https://www.abhibus.com/");
 			myWait.until(ExpectedConditions.titleContains("Online Bus Ticket Booking "));
 			String tooltiptext=homePage.getCompanyLogo_TooltipText();
-			if(compare(expectedToolTipText, tooltiptext))
+			if(compare(expectedToolTipText, tooltiptext)) //Compare tool tip text
 				test.log(Status.PASS, "Tooltip text is displayed");
 			else
 				test.log(Status.FAIL,"Tooltip text is not displayed");
@@ -104,59 +108,88 @@ public class TestCase1 {
 			searchCriteria.put("returndate", returndate);
 			homePage.busSearch(searchCriteria);// search for the buses with the specified criteria
 			test.log(Status.INFO,"entered all details"+ test.addScreenCaptureFromPath(captureScreen()));
-			
-			//Book onward journey
-			
-			HashMap<String,String>journeyDetails=new HashMap<String, String>();
-			journeyDetails.put("busOperator", busOperator);
-			journeyDetails.put("boardingPoint", "2");
-			searchPage.book_ticket(journeyDetails);
-			onwardJourneyfare=Double.parseDouble(searchPage.getTotalfare());
-			System.out.println(onwardJourneyfare);
-			
-			//Book return journey
-			//Click on return
-			searchPage.bookreturn();
-			HashMap<String,String>returnDetails=new HashMap<String, String>();
-			returnDetails.put("busOperator", "APSRTC");
-			returnDetails.put("dropingPoint", "2");
-			searchPage.book_return_ticket(returnDetails);
-			//returnJourneyfare=Double.parseDouble(searchPage.getTotalfare());
-			//System.out.println(returnJourneyfare);
-			
-			//click on continue payment
-			
-			searchPage.continuetopayment_click();
-			
-			//verify total fare on passenger info page
-			
-			  totalAmount=infoPage.getTotalAmount();
-			  
-			  if(totalAmount==(onwardJourneyfare+returnJourneyfare))
-			  {
-				  test.log(Status.PASS, "Total fare is as expected"+test.addScreenCaptureFromPath(captureScreen()));
-			  }
-			  
-			  else 
-			  {
-				  test.log(Status.PASS, "Total fare is as expected"+test.addScreenCaptureFromPath(captureScreen()));
-			  }
-				
 		}
 		catch(Exception e)
 		{
-			test.log(Status.FAIL,""+e.getMessage()+test.addScreenCaptureFromPath(captureScreen()));
-			//teardown();
+			test.log(Status.FAIL, ""+e.getMessage());
+			teardown();
 		}
-			
-	}	
+	}
+	
+	@Test(priority=2,dependsOnMethods= {"bus_search"})
+	
+	public void book_onward_journey()
+	{
+		try
+		{
+		HashMap<String,String>journeyDetails=new HashMap<String, String>();
+		journeyDetails.put("busOperator", busOperator);
+		journeyDetails.put("boardingPoint", "2");
+		searchPage.book_ticket(journeyDetails);
+		onwardJourneyfare=Double.parseDouble(searchPage.getTotalfare());
+		test.log(Status.INFO, "onward journey total fare"+onwardJourneyfare);
+		System.out.println(onwardJourneyfare);
+		}
+		catch(Exception e)
+		{
+			test.log(Status.FAIL, "Error occured while booking onward journey");
+			teardown();
+		}
+	}
+	
+	
+	@Test(priority=3,dependsOnMethods= {"book_onward_journey"})
+	
+	public void book_return_journey() throws InterruptedException
+	{
+		try 
+		{
+		searchPage.bookreturn();
+		HashMap<String,String>returnDetails=new HashMap<String, String>();
+		returnDetails.put("busOperator", "APSRTC");
+		returnDetails.put("dropingPoint", "2");
+		searchPage.book_return_ticket(returnDetails);
+		returnJourneyfare=Double.parseDouble(searchPage.getTotalfare_1());
+		test.log(Status.INFO, "return journey total fare"+returnJourneyfare);
+		System.out.println(returnJourneyfare);
+		}
+		catch (Exception e) {
+			test.log(Status.FAIL, "Error occured while booking return ticket"+e.getMessage());
+		}
+	}
+	
+	@Test(priority=4,dependsOnMethods= {"book_return_journey"})
+	
+	public void verify_details_on_paymentpage() throws IOException
+	{
+		searchPage.continuetopayment_click();
 		
+		//verify total fare on passenger info page
+		
+		  totalAmount=infoPage.getTotalAmount();
+		  
+		  System.out.println(totalAmount);
+		  
+		  if(totalAmount>(onwardJourneyfare+returnJourneyfare))
+		  {
+			  test.log(Status.FAIL, "Total fare is as expected"+test.addScreenCaptureFromPath(captureScreen()));
+			  Assert.fail();
+			  teardown();
+		  }
+		  
+		  else 
+		  {
+			  test.log(Status.PASS, "Total fare is as expected"+test.addScreenCaptureFromPath(captureScreen()));
+		  }
+	}
+	
+	
 	
 	@AfterClass
 	
 	public void teardown()
 	{
-		//driver.close();
+		driver.close();
 		
 		report.flush();
 	}
